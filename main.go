@@ -115,6 +115,10 @@ func main() {
 
 	app := gin.Default()
 
+	app.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Welcome to KV Store"})
+	})
+
 	app.GET("/:key", readFromKv)
 
 	app.POST("/:key", writeToKv)
