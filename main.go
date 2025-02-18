@@ -92,21 +92,6 @@ func readFromKv(c *gin.Context) {
 	c.Data(resp.StatusCode(), "application/json", []byte(resp.String()))
 }
 
-// func deleteFromKv(c *gin.Context){
-//   key := c.Param("key")
-//   accountId := os.Getenv("KV_ACCOUNT_ID")
-//   url := fmt.Sprintf(connectionUrl, accountId, namespaceID, key)
-
-//   resp, err := client.R().SetAuthToken(apiToken).DELETE(url)
-
-//   if err != nil {
-//     c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//     return
-//   }
-
-//   c.Data(resp.StatusCode(), "application/json", []byte(resp.String()))
-// }
-
 func main() {
 
 	if err := godotenv.Load(); err != nil {
@@ -115,15 +100,13 @@ func main() {
 
 	app := gin.Default()
 
-	app.GET("/", func(c *gin.Context) {
+	app.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to KV Store"})
 	})
 
 	app.GET("/:key", readFromKv)
 
 	app.POST("/:key", writeToKv)
-
-	// app.DELETE("/:key", deleteFromKv)
 
 	PORT := os.Getenv("PORT")
 	fmt.Println("Server running on PORT -> ", PORT)
